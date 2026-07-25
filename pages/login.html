@@ -3,15 +3,30 @@
 	<head>
 		<title>KiwiBlog - Login</title>
 		<link rel="stylesheet" href="/styles.css">
-		<script src="/scripts/common.js"></script>
-		<script src="/scripts/auth.js"></script>
 	</head>
 	<body>
-		<h1>KiwiBlog - Login</h1>
-		<p id="error" class="error" style="display: none;"></p>
-		<label for="email">Email: </label><input id="email">
-		<label for="password">Password: </label><input id="password">
-		<button onclick="login()">Login</button>
-		<footer><a href="/pages/register.html">Register</a> <a href="/pages/login.html">Login</a> <a href="/pages/blog.html">Blog</a> <a href="/pages/logout.html">Logout</a></footer>
+		<main>
+			<section>
+				<h1>KiwiBlog - Login</h1>
+				<p id="status" style="display: none;"></p>
+
+				<form>
+					<div>
+						<label for="email-input">Email: </label>
+						<input id="email-input">
+					</div>
+
+					<div>
+						<label for="password-input">Password: </label>
+						<input id="password-input">
+					</div>
+
+					<button onclick="login()">Login</button>
+				</form>
+			</section>
+		</main>
+	
+		<script src="/scripts/common.js"></script>
+		<script src="/scripts/auth.js"></script>
 	</body>
 </html>

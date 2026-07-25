@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KiwiBlog - Register</title>
+		<link rel="stylesheet" href="/styles.css">
+	</head>
+	<body>
+		<main>
+			<section>
+				<h1>KiwiBlog - Register</h1>
+				<p id="status" style="display: none;"></p>
+
+				<form>
+					<div>
+						<label for="name-input">Blog Name: </label>
+						<input id="name-input">
+					</div>
+
+					<div>
+						<label for="email-input">Email: </label>
+						<input id="email-input">
+					</div>
+
+					<div>
+						<label for="password-input">Password: </label>
+						<input id="password-input">
+					</div>
+
+					<div>
+						<label for="email-public-input">Public Email: </label>
+						<input id="email-public-input" type="checkbox">
+					</div>
+
+					<button onclick="register()">Register</button>
+				</form>
+			</section>
+		</main>
+		
+		<script src="/scripts/common.js"></script>
+		<script src="/scripts/auth.js"></script>
+	</body>
+</html>

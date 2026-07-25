@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KiwiBlog - Blog</title>
+		<link rel="stylesheet" href="/styles.css">
+	</head>
+	<body>
+		<main>			
+			<section>
+				<h1>KiwiBlog - Blog</h1>
+				<p id="post-status" style="display: none;"></p>
+				<form id="add-blog-form">
+					<div>
+						<label for="title-input">Title:</label>
+						<input id="title-input" type="text" name="title" required>
+					</div>
+					
+					<div>
+						<label for="content-input">Body:</label>
+						<textarea id="content-input" type="content" name="content" rows="10" required></textarea>
+					</div>
+
+					<div>
+						<label for="summary-input">Summary:</label>
+						<textarea id="summary-input" type="text" name="summary" rows="2"></textarea>
+					</div>
+
+					<button type="submit">Post</button>
+				</form>
+				
+				<br>
+				<form>
+					<label for="blog-embed-script">Blog embed script:</label>
+					<textarea id="blog-embed-script"></textarea>
+				</form>
+			</section>
+			<section>
+				<h1>Your Posts</h1>
+				<p id="view-status" style="display: none;"></p>
+
+				<div id="blog-viewer">
+    				<div id="posts-container"></div>
+					<div id="load-posts-button-container" class="flex-row">
+						<button id="load-posts-button" onclick="loadPosts()">Load Posts</button>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<div id="blog-viewer"><script></script><div id="posts-container"></div><div id="load-posts-button-container"><button id="load-posts-button" onclick="loadPosts()">Load Posts</button></div></div>
+		
+		<script src="/scripts/common.js"></script>
+		<script src="/scripts/auth.js"></script>
+		<script src="/scripts/blog_functions.js"></script>
+		<script src="/scripts/home_blog.js"></script>
+	</body>
+</html>

@@ -1,16 +1,21 @@
+var nameInput = document.getElementById("name-input");
+var emailInput = document.getElementById("email-input");
+var passwordInput = document.getElementById("password-input");
+var emailPublicInput = document.getElementById("email-public-input");
+
 async function login() {
-	hideError("error");
+	hideStatus("status");
 
-	var email = document.getElementById("email").value;
-	var password = document.getElementById("password").value;
+	var email = emailInput.value;
+	var password = passwordInput.value;
 
-	var response = await api("login_blog", { email, password });
+	var response = await api("login", { email, password }, "POST");
 
 	if (response.error) {
-		if (response.status == 400) {
-			displayError("error", "Invalid login credentials.");
+		if (response.status == 401) {
+			displayStatus(true, "status", "Invalid login credentials.");
 		} else {
-			displayError("error", response.data);
+			displayStatus(true, "status", response.data);
 		}
 		return;
 	}
@@ -19,9 +24,29 @@ async function login() {
 }
 
 async function logout() {
-	var response = await api("logout_blog");
+	hideStatus("status");
+
+	var response = await api("logout");
 
 	if (response.error) {
-		displayError("error", response.data);
+		displayStatus(true, "status", response.data);
+	}
+}
+
+async function register() {
+	var name = nameInput.value;
+	var email = emailInput.value;
+	var password = passwordInput.value;
+	var isEmailPublic = emailPublicInput.checked;
+
+	var response = await api("register", { name, email, password, isEmailPublic }, "POST");
+
+	if (response.error) {
+		if (response.status == 400) {
+			displayStatus(true, "status", "Bad registration info: " + response.data);
+		} else {
+			displayStatus(true, "status", response.data);
+		}
+		return;
 	}
 }

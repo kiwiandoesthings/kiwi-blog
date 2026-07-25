@@ -1,3 +1,148 @@
+.flex-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
+html {
+    height: 100%;
+    margin: 0px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+	font-family: "MS PGothic", Tahoma, Verdana;
+}
+
+body, button, input, select, textarea {
+    font-family: "MS PGothic", Tahoma, Verdana;
+}
+
+p, a, label, button {
+	font-size: 12pt;
+}
+
+main {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+main > * {
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+main > section {
+    flex: 1;
+    min-width: 0;
+}
+
+main > section:only-child {
+    flex: 0 0 50%;
+}
+
 .error {
 	color: red;
+}
+
+.info {
+	color: rgb(0, 255, 0);
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+form > div {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+textarea {
+	resize: none;
+}
+
+footer {
+    justify-content: center;
+    display: flex;
+}
+
+.footer-link {
+	padding: 0px 10px 0px 10px;
+}
+
+#blog-viewer {
+	display: flex;
+	flex-direction: column;
+}
+
+#posts-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.blog-post {
+	display: flex;
+	flex-direction: column;
+	background-color: lightgrey;
+	margin-bottom: 15px;
+	padding: 5px;
+}
+
+.blog-header {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	background-color: grey;
+	padding: 5px;
+	box-sizing: border-box;
+	margin-bottom: 10px;
+}
+
+.blog-header > p {
+	margin: 0px;
+}
+
+.blog-body {
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	background-color: grey;
+	padding: 5px;
+	box-sizing: border-box;
+	margin: 0px;
+}
+
+.blog-body > * {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+.blog-body > *:first-child {
+    margin-top: 0;
+}
+
+.blog-body > *:last-child {
+    margin-bottom: 0;
+}
+
+#load-posts-button-container {
+	justify-content: center;
+}
+
+#load-posts-button {
+	width: fit-content;
 }
