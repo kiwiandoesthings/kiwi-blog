@@ -9,7 +9,7 @@
 			<section>
 				<h1>KiwiBlog - Blog</h1>
 				<p id="post-status" style="display: none;"></p>
-				<form id="add-blog-form">
+				<form id="add-blog-form" onsubmit="event.preventDefault(); await postBlog();">
 					<div>
 						<label for="title-input">Title:</label>
 						<input id="title-input" type="text" name="title" required>

@@ -1,17 +1,17 @@
-document.getElementById("add-blog-form").addEventListener("submit", async function(event) {
-    event.preventDefault(); 
-    await postBlog();
-});
-
-const blogID = getCookie("blog_id");
-var postsContainerElement = document.getElementById("posts-container");
-var loadButtonElement = document.getElementById("load-posts-button");
-var embedScriptElement = document.getElementById("blog-embed-script");
+var blogID;
+var postsContainerElement;
+var loadButtonElement;
+var embedScriptElement;
 var loading = false;
 var lastLoadedPostID = 0;
 var totalBlogPosts = 0;
 
-getBlogInfo();
+function setup(defaultBlogID = undefined) {
+	blogID = defaultBlogID === undefined ? getCookie("blog_id") : defaultBlogID;
+	postsContainerElement = document.getElementById("posts-container");
+	loadButtonElement = document.getElementById("load-posts-button");
+	embedScriptElement = document.getElementById("blog-embed-script");
+}
 
 async function getBlogInfo() {
 	var infoResponse = await api("info", { blogID }, "GET");
