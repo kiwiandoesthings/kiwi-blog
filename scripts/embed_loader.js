@@ -1,4 +1,6 @@
 async function initialize(options) {
+	var blogContainer = document.getElementById(options.containerID);
+
 	var viewer = document.createElement("div");
 	viewer.id = "blog-viewer";
 
@@ -17,15 +19,14 @@ async function initialize(options) {
 
 	var loadPostsButton = document.createElement("button");
 	loadPostsButton.id = "load-posts-button";
-	loadPostsButton.onclick=loadPosts();
+	loadPostsButton.onclick=loadPosts;
 	loadPostsButton.textContent = "Load Posts";
 
 	buttonContainer.appendChild(loadPostsButton);
 	container.appendChild(buttonContainer);
 	shadowDOM.appendChild(container);
+	blogContainer.appendChild(viewer);
 
-	setup();
-	await getBlogInfo();
-	await loadPosts();
+	setup(options.blogID);
 }
 

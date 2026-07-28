@@ -1,4 +1,5 @@
-const apiString = "https://api.kiwiandoesthings.place/blog/";
+const isDevelopment = false;
+const apiString = isDevelopment ? "https://localhost:7164/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
 addFooter();
 
@@ -105,7 +106,7 @@ function addFooter() {
 
 	var footer = document.createElement("footer");
 	
-	var links = ["/index", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
+	var links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
 	var names = ["Home", "Blog", "Account", "Login", "Register"];
 
 	for (var i = 0; i < links.length; i++) {
@@ -117,4 +118,8 @@ function addFooter() {
 	}
 
 	body.appendChild(footer);
+}
+
+function redirect(path) {
+	window.location = "/" + path;
 }

@@ -8,6 +8,10 @@
 	flex-direction: column;
 }
 
+.centered {
+	text-align: center;
+}
+
 html {
     height: 100%;
     margin: 0px;
@@ -120,7 +124,6 @@ footer {
 	word-wrap: break-word;
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
-	background-color: grey;
 	padding: 5px;
 	box-sizing: border-box;
 	margin: 0px;

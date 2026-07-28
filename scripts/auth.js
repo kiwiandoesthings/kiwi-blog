@@ -21,6 +21,10 @@ async function login() {
 	}
 
 	setCookie("blog_id", response.data.blogID);
+
+	displayStatus(false, "status", "Successfully logged in.");
+
+	console.log("e");
 }
 
 async function logout() {
@@ -31,6 +35,9 @@ async function logout() {
 	if (response.error) {
 		displayStatus(true, "status", response.data);
 	}
+
+	setCookie("blog_id", "");
+	displayStatus(false, "status", "Successfully logged out.");
 }
 
 async function register() {
@@ -49,4 +56,6 @@ async function register() {
 		}
 		return;
 	}
+
+	displayStatus(false, "status", "Successfully registered. Please log in with your new account.");
 }

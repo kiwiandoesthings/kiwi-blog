@@ -12,9 +12,34 @@
 		
 				<button onclick="logout()">Logout</button>
 			</section>
+			<section>
+				<h1>Blog Integrations</h1>
+
+				<form>
+					<h3 class="centered">Blog Embed Builder</h3>
+
+					<div>
+						<label for="stylesheet-input">Stylesheet path:</label>
+						<input id="stylesheet-input" type="text" name="stylesheet" required>
+					</div>
+
+					<div>
+						<label for="container-id-input">Blog container ID (optional):</label>
+						<input id="container-id-input" type="text" name="container-id">
+					</div>
+
+					<div>
+						<label for="blog-embed-script">Blog embed script:</label>
+						<textarea id="blog-embed-script" rows="4"></textarea>
+					</div>
+
+					<button type="button" onclick="getScript()">Generate</button>
+				</form>
+			</section>
 		</main>
 	
 		<script src="/scripts/common.js"></script>
 		<script src="/scripts/auth.js"></script>
+		<script src="/scripts/control_blog.js"></script>
 	</body>
 </html>
