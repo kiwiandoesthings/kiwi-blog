@@ -1,5 +1,5 @@
-const isDevelopment = false;
-const apiString = isDevelopment ? "https://localhost:7164/blog/" : "https://api.kiwiandoesthings.place/blog/";
+const isDevelopment = true;
+const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
 addFooter();
 
@@ -11,7 +11,7 @@ function setCookie(key, value) {
     "; domain=.kiwiandoesthings.place" + 
     "; path=/" + 
     "; Secure" + 
-    "; SameSite=Strict";
+    "; SameSite=Lax";
 }
 
 function getCookie(cookieKey) {
@@ -53,7 +53,7 @@ async function api(route, body, method) {
         if (response.status == 500) {
             return apiResponse(true, 500, serverErrorMessage);
         } else if (!response.ok) {
-            var unknownErrorMessage = "Unknown error: " + response.status + ". Please report if the problem persists.";
+            var unknownErrorMessage = "Unknown error: " + response.status + " with error message \"" + await response.text() + "\". Please report if the problem persists.";
             console.log(unknownErrorMessage);
             return apiResponse(true, response.status, unknownErrorMessage);
         }
@@ -72,7 +72,7 @@ async function api(route, body, method) {
     } catch (error) {
         console.error(error); 
         console.log(netErrorMessage);
-        return apiResponse(false, 0, netErrorMessage);
+        return apiResponse(true, 0, netErrorMessage);
     }
 }
 
@@ -86,6 +86,10 @@ function apiResponse(error, errorCode, message) {
 
 function displayStatus(isError, statusID, message) {
 	var statusElement = document.getElementById(statusID);
+	if (statusElement == null) {
+		console.log("Couldn't show status element \"" + statusID + "\" because it doesn't exist.");
+	}
+
 	statusElement.style.display = "inherit";
 	statusElement.innerHTML = message;
 
@@ -98,6 +102,26 @@ function displayStatus(isError, statusID, message) {
 
 function hideStatus(statusID) {
 	var statusElement = document.getElementById(statusID);
+
+	if (statusElement == null) {
+		console.log("Couldn't hide status element \"" + statusID + "\" because it doesn't exist.");
+	} else {
+		statusElement.style.display = "none";
+	}
+}
+
+function displayStatusElement(isError, statusElement, message) {
+	statusElement.style.display = "inherit";
+	statusElement.innerHTML = message;
+
+	var color = "rgb(0, 255, 0)";
+	if (isError) {
+		color = "rgb(255, 0, 0)";
+	}
+	statusElement.style.color = color;
+}
+
+function hideStatusElement(statusElement) {
 	statusElement.style.display = "none";
 }
 

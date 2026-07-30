@@ -9,7 +9,7 @@ async function login() {
 	var email = emailInput.value;
 	var password = passwordInput.value;
 
-	var response = await api("login", { email, password }, "POST");
+	var response = await api("sessions", { email, password }, "POST");
 
 	if (response.error) {
 		if (response.status == 401) {
@@ -23,14 +23,12 @@ async function login() {
 	setCookie("blog_id", response.data.blogID);
 
 	displayStatus(false, "status", "Successfully logged in.");
-
-	console.log("e");
 }
 
 async function logout() {
 	hideStatus("status");
 
-	var response = await api("logout");
+	var response = await api("sessions", {}, "DELETE");
 
 	if (response.error) {
 		displayStatus(true, "status", response.data);
@@ -46,7 +44,7 @@ async function register() {
 	var password = passwordInput.value;
 	var isEmailPublic = emailPublicInput.checked;
 
-	var response = await api("register", { name, email, password, isEmailPublic }, "POST");
+	var response = await api("blogs", { name, email, password, isEmailPublic }, "POST");
 
 	if (response.error) {
 		if (response.status == 400) {

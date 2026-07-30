@@ -28,7 +28,7 @@ body {
 	font-family: "MS PGothic", Tahoma, Verdana;
 }
 
-body, button, input, select, textarea {
+button, input, select, textarea {
     font-family: "MS PGothic", Tahoma, Verdana;
 }
 
@@ -106,6 +106,13 @@ footer {
 	padding: 5px;
 }
 
+.blog-post hr {
+	color: darkgrey;
+	width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .blog-header {
 	display: flex;
 	justify-content: space-between;
@@ -140,6 +147,10 @@ footer {
 
 .blog-body > *:last-child {
     margin-bottom: 0;
+}
+
+details[open] p {
+	margin: 5px 0px;
 }
 
 #load-posts-button-container {

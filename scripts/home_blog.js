@@ -3,21 +3,21 @@ var postsContainerElement;
 var loadButtonElement;
 var loading = false;
 var lastLoadedPostID = 0;
+var loadedPostsCount = 0;
 var totalBlogPosts = 0;
+var isEditable = false;
 
-async function setup(defaultBlogID = undefined) {
+async function setup(tryBlogID) {
 	var shadowRoot = document.getElementById("blog-viewer").shadowRoot;
     postsContainerElement = shadowRoot.getElementById("posts-container");
     loadButtonElement = shadowRoot.getElementById("load-posts-button");
 
-	if (defaultBlogID == undefined) {
-		if (getCookie("blog_id") == "") {
-			displayStatus(true, "view-status", "You are not logged in.");
-			updateButton();
-			return;
-		}
-		blogID = getCookie("blog_id");
+	if (tryBlogID == "") {
+		displayStatus(true, "view-status", "You are not logged in.");
+		updateButton();
+		return;
 	}
+	blogID = tryBlogID;
 
 	await getBlogInfo();
 	loadPosts();
@@ -25,7 +25,7 @@ async function setup(defaultBlogID = undefined) {
 }
 
 async function getBlogInfo() {
-	var infoResponse = await api("info", { blogID }, "GET");
+	var infoResponse = await api("blogs/" + blogID, {}, "GET");
 
 	if (!infoResponse.error) {
 		totalBlogPosts = infoResponse.data.totalPosts;
@@ -35,56 +35,106 @@ async function getBlogInfo() {
 }
 
 async function loadPosts() {
-	if (loading) {
-		return;
+    if (loading) {
+        return;
+    }
+
+    loading = true;
+    var response = await api("posts", { blogID: blogID, lastPostID: lastLoadedPostID, amount: 10 }, "GET");
+
+    if (response.error) {
+        console.log("Error loading posts: " + response.data);
+        loading = false;
+        return;
+    }
+
+    for (let post of response.data) {
+        var postElement = createPostElement(post);
+        postsContainerElement.appendChild(postElement);
+        lastLoadedPostID = post.postID;
+    }
+
+    loadedPostsCount += response.data.length;
+    loading = false;
+    updateButton();
+}
+
+function createPostElement(post) {
+    var postElement = document.createElement("div");
+    postElement.classList.add("blog-post");
+
+    var headerElement = document.createElement("div");
+    headerElement.classList.add("blog-header");
+
+    var titleElement = document.createElement("p");
+    titleElement.textContent = post.postTitle;
+    var dateElement = document.createElement("p");
+    dateElement.textContent = formatTimestamp(post.postCreationDate);
+
+    headerElement.appendChild(titleElement);
+    headerElement.appendChild(dateElement);
+
+    var contentElement = document.createElement("div");
+    contentElement.innerHTML = post.postFormattedContent;
+    contentElement.classList.add("blog-body");
+
+    postElement.appendChild(headerElement);
+    postElement.appendChild(contentElement);
+
+	if (post.postSummary != "") {
+		var detailsElement = document.createElement("details");
+		var summaryLabelElement = document.createElement("summary");
+		summaryLabelElement.textContent = "Summary";
+		var summaryElement = document.createElement("p");
+		summaryElement.textContent = post.postSummary;
+
+		detailsElement.appendChild(summaryLabelElement);
+		detailsElement.appendChild(summaryElement);
+		
+		postElement.appendChild(detailsElement);
 	}
 
-	loading = true;
-	var response = await api("get", { blogID: blogID, startPostID: lastLoadedPostID, amount: 10 }, "GET");
+    if (isEditable) {
+		var separator = document.createElement("hr");
 
-	if (response.error) {
-		console.log("Error loading posts: " + response.data);
-		loading = false;
-		return;
-	}
+        var actionContainer = document.createElement("div");
+        actionContainer.classList.add("blog-actions");
 
-	for (var post of response.data) {
-		var postElement = document.createElement("div");
-		postElement.classList.add("blog-post");
+        var statusElement = document.createElement("span");
+        statusElement.id = "post-status-" + post.postID;
+        statusElement.style.display = "none";
 
-		// Header
-		var headerElement = document.createElement("div");
-		headerElement.classList.add("blog-header");
+        var editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        editButton.onclick = function() {
+            startEditPost(post.postID, postElement, statusElement); 
+        };
 
-		var titleElement = document.createElement("p");
-		titleElement.textContent = post.postTitle;
-		var dateElement = document.createElement("p");
-		dateElement.textContent = formatTimestamp(post.postCreationDate);
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function() {
+            deletePost(post.postID, postElement, statusElement);
+        };
 
-		headerElement.appendChild(titleElement);
-		headerElement.appendChild(dateElement);
-
-		// Body
-		var contentElement = document.createElement("div");
-		contentElement.innerHTML = post.postFormattedContent;
-		contentElement.classList.add("blog-body");
-
-		postElement.appendChild(headerElement);
-		postElement.appendChild(contentElement);
-
-		postsContainerElement.appendChild(postElement);
-
-		lastLoadedPostID++;
-	}
-	loading = false;
-	updateButton();
+		postElement.appendChild(separator);
+        actionContainer.appendChild(editButton);
+        actionContainer.appendChild(deleteButton);
+        actionContainer.appendChild(statusElement);
+        postElement.appendChild(actionContainer);
+    }
+    
+    return postElement;
 }
 
 function updateButton() {
-	if (lastLoadedPostID == totalBlogPosts) {
-		loadButtonElement.style.display = "none";
-	}
-	loadButtonElement.textContent = "Load " + Math.min(lastLoadedPostID + 1, totalBlogPosts) + "-" + Math.min(lastLoadedPostID + 10, totalBlogPosts) + "/" + totalBlogPosts + " posts"; 
+    if (loadedPostsCount >= totalBlogPosts) {
+        loadButtonElement.style.display = "none";
+    }
+    
+    var nextStart = loadedPostsCount + 1;
+    var nextEnd = Math.min(loadedPostsCount + 10, totalBlogPosts);
+
+    loadButtonElement.textContent = "Load " + nextStart + "-" + nextEnd + "/" + totalBlogPosts + " posts";
 }
 
 function formatTimestamp(timestamp) {

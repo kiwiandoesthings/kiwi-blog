@@ -2,14 +2,14 @@
     email kiwiandoesthings@gmail.com
 }
 
-https://test.kiwiandoesthings.place {
-    tls internal
+https://kiwiblog.test.kiwiandoesthings.place {
+	tls internal
     root * "C:/Users/Kiwian/Downloads/Github Repos/kiwi-blog/"
     file_server
     try_files {path} {path}.html /404.html
 }
 
-https://api.kiwiandoesthings.place {
-    tls internal
+https://api.test.kiwiandoesthings.place {
+	tls internal
     reverse_proxy localhost:5201
 }

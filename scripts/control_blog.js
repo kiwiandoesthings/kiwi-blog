@@ -21,7 +21,7 @@ async function getScript() {
 		return;
 	}
 
-	var scriptResponse = await api("script", { blogID, stylesheetName: stylesheetInput.value, containerID: containerInput.value }, "GET");
+	var scriptResponse = await api("blogs/" + blogID + "/script", { blogID, stylesheetName: stylesheetInput.value, containerID: containerInput.value }, "GET");
 
 	if (!scriptResponse.error) {
 		embedScriptElement.textContent = scriptResponse.data.blogScript;
