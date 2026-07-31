@@ -1,4 +1,4 @@
-const isDevelopment = true;
+const isDevelopment = window.location.hostname.includes("test");
 const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
 addFooter();
