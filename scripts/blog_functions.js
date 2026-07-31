@@ -1,7 +1,11 @@
 async function addPost() {
-    var title = document.getElementById("title-input").value;
-    var content = document.getElementById("content-input").value;
-    var summary = document.getElementById("summary-input").value;
+	var titleElement = document.getElementById("title-input").value;
+    var contentElement = document.getElementById("content-input").value;
+    var summaryElement = document.getElementById("summary-input").value;
+
+    var title = titleElement.value;
+    var content = contentElement.value;
+    var summary = summaryElement.value;
 
 	if (!title || !content) {
 		alert("You cannot have a post with an empty title or body.");
@@ -32,7 +36,13 @@ async function addPost() {
         if (lastLoadedPostID === 0) {
             lastLoadedPostID = post.postID;
         }
-    }
+    } else {
+		displayStatus(true, "post-status", "Failed to display the newly posted post with unknown error: " + newPostResponse.status);
+	}
+
+	titleElement.value = "";
+	contentElement.value = "";
+	summaryElement.value = "";
 
     updateButton();
 }
