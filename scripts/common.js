@@ -1,4 +1,4 @@
-const isDevelopment = false;
+const isDevelopment = true;
 const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
 addFooter();

@@ -9,7 +9,7 @@ async function login() {
 	var email = emailInput.value;
 	var password = passwordInput.value;
 
-	var response = await api("sessions", { email, password }, "POST");
+	var response = await api("sessions", { email: email, password: password }, "POST");
 
 	if (response.error) {
 		if (response.status == 401) {
@@ -31,7 +31,11 @@ async function logout() {
 	var response = await api("sessions", {}, "DELETE");
 
 	if (response.error) {
-		displayStatus(true, "status", response.data);
+		if (response.status == 401) {
+			displayStatus(true, "status", "You are not currently logged in!");
+		} else {
+			displayStatus(true, "status", response.data);
+		}
 		return;
 	}
 
@@ -45,7 +49,7 @@ async function register() {
 	var password = passwordInput.value;
 	var isEmailPublic = emailPublicInput.checked;
 
-	var response = await api("blogs", { name, email, password, isEmailPublic }, "POST");
+	var response = await api("blogs", { name: name, email: email, password: password, isEmailPublic: isEmailPublic }, "POST");
 
 	if (response.error) {
 		if (response.status == 400) {

@@ -13,17 +13,17 @@
 				<form>
 					<div>
 						<label for="name-input">Blog Name: </label>
-						<input id="name-input">
+						<input id="name-input" autocomplete="off" required>
 					</div>
 
 					<div>
 						<label for="email-input">Email: </label>
-						<input id="email-input">
+						<input id="email-input" autocomplete="off" required>
 					</div>
 
 					<div>
 						<label for="password-input">Password: </label>
-						<input id="password-input">
+						<input id="password-input" autocomplete="off" required>
 					</div>
 
 					<div>
@@ -31,7 +31,7 @@
 						<input id="email-public-input" type="checkbox">
 					</div>
 
-					<button onclick="register()">Register</button>
+					<button type="button" onclick="register()">Register</button>
 				</form>
 			</section>
 		</main>

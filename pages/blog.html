@@ -12,17 +12,17 @@
 				<form id="add-blog-form">
 					<div>
 						<label for="title-input">Title:</label>
-						<input id="title-input" type="text" name="title" required>
+						<input id="title-input" type="text" name="title" autocomplete="off" required>
 					</div>
 					
 					<div>
 						<label for="content-input">Body (Markdown):</label>
-						<textarea id="content-input" type="content" name="content" rows="10" required></textarea>
+						<textarea id="content-input" type="content" name="content" rows="10" autocomplete="off" required></textarea>
 					</div>
 
 					<div>
 						<label for="summary-input">Summary:</label>
-						<textarea id="summary-input" type="text" name="summary" rows="2"></textarea>
+						<textarea id="summary-input" type="text" name="summary" rows="2" autocomplete="off"></textarea>
 					</div>
 
 					<button type="button" onclick="addPost();">Post</button>

@@ -3,6 +3,11 @@ async function addPost() {
     var content = document.getElementById("content-input").value;
     var summary = document.getElementById("summary-input").value;
 
+	if (!title || !content) {
+		alert("You cannot have a post with an empty title or body.");
+		return;
+	}
+
     var response = await api("posts", { title, content, summary }, "POST");
 
     if (response.error) {
@@ -33,28 +38,142 @@ async function addPost() {
 }
 
 async function startEditPost(postID, postElement, statusElement) {
-	var response = await api("posts", { blogID: blogID, lastPostID: postID, amount: 1 }, "GET");
+	var response = await api("posts", { blogID: blogID, lastPostID: postID + 1, amount: 1 }, "GET");
 
 	if (response.error) {
 		displayStatusElement(true, statusElement, "Failed to fetch raw post contents. Please try again.");
+		return;
 	}
 
 	var headerElement = postElement.querySelector(".blog-header");
-	var titleElement = headerElement.querySelector("p:first-child");
+	var titleElement = headerElement.querySelector(".blog-title");
 	var bodyElement = postElement.querySelector(".blog-body");
-	var bodyContent = bodyElement.querySelector("p:first-child");
+	var detailsElement = postElement.querySelector(".blog-summary");
+	var summaryElement = detailsElement.querySelector(".blog-summary-content");
+	var actionsElement = postElement.querySelector(".blog-actions");
+	var editButton = actionsElement.querySelector(".actions-edit");
+	var deleteButton = actionsElement.querySelector(".actions-delete");
 
 	var titleInput = document.createElement("input");
 	titleInput.value = titleElement.textContent;
 
 	var bodyInput = document.createElement("textarea");
+	bodyInput.rows = 10;
 	bodyInput.value = response.data[0].postRawContent;
 
-	console.log(titleElement);
-	console.log(bodyContent);
+	var summaryInput = document.createElement("textarea");
+	summaryInput.rows = 2;
+	summaryInput.value = summaryElement.textContent;
+
+	var post = {
+		header: headerElement,
+		title: titleInput,
+		body: bodyInput,
+		summary: summaryInput,
+		actions: actionsElement,
+		postID: postID,
+		originalTitle: titleElement.textContent,
+        originalHTML: bodyElement.innerHTML,
+		originalSummary: summaryElement.textContent
+	}
+
+	var submitButton = document.createElement("button");
+	submitButton.classList.add("actions-edit-submit");
+	submitButton.textContent = "Submit";
+	submitButton.onclick = function() {
+		finishEdit(post, postElement, statusElement);
+	}
+
+	var cancelButton = document.createElement("button");
+	cancelButton.classList.add("actions-edit-cancel");
+	cancelButton.textContent = "Cancel";
+	cancelButton.onclick = function() {
+		cancelEdit(post, postElement, statusElement);
+	}
 
 	titleElement.replaceWith(titleInput);
 	bodyElement.replaceWith(bodyInput);
+	detailsElement.replaceWith(summaryInput);
+	editButton.replaceWith(submitButton);
+	deleteButton.replaceWith(cancelButton);
+}
+
+async function finishEdit(post, postElement, statusElement) {
+	if (!confirm("Are you sure you want to submit the edit? You won't be able to recover the original contents of the post.")) {
+		return;
+	}
+
+	if (!post.title.value || !post.body.value) {
+		alert("You cannot have a post with an empty title or body.");
+		return;
+	}
+
+	var response = await api("posts/" + post.postID, { title: post.title.value, content: post.body.value, summary: post.summary.value }, "PUT");
+
+	if (response.error) {
+		displayStatusElement(true, statusElement, "Failed to edit post.");
+		return;
+	}
+
+	var formattedHtml = response.data.postFormattedContent;
+	var editDate = response.data.postEditDate;
+    
+    restorePost(post, postElement, statusElement, post.title.value, formattedHtml, post.summary.value, editDate);
+}
+
+async function cancelEdit(post, postElement, statusElement) {
+	restorePost(post, postElement, statusElement, post.originalTitle, post.originalHTML, post.originalSummary, null);
+}
+
+function restorePost(post, postElement, statusElement, finalTitle, finalHTML, finalSummary, newEditDate) {
+    var titleElement = document.createElement("p");
+    titleElement.classList.add("blog-title");
+    titleElement.textContent = finalTitle;
+	if (newEditDate) {
+        var dateElement = post.header.querySelector(".blog-date");
+        var creationText = dateElement.innerHTML.split("<br>")[0]; 
+        var editText = formatTimestamp(newEditDate);
+        dateElement.innerHTML = creationText + "<br>" + editText;
+    }
+
+    var contentElement = document.createElement("div");
+    contentElement.classList.add("blog-body");
+    contentElement.innerHTML = finalHTML;
+
+	var detailsElement = document.createElement("details");
+	detailsElement.classList.add("blog-summary");
+	var summaryLabelElement = document.createElement("summary");
+	summaryLabelElement.textContent = "Summary";
+	summaryLabelElement.classList.add("blog-summary-label");
+	var summaryElement = document.createElement("p");
+	summaryElement.textContent = finalSummary;
+	summaryElement.classList.add("blog-summary-content");
+
+	detailsElement.appendChild(summaryLabelElement);
+	detailsElement.appendChild(summaryElement);
+	if (!finalSummary) {
+		detailsElement.style.display = "none";
+	}
+
+    var editButton = document.createElement("button");
+    editButton.classList.add("actions-edit");
+    editButton.textContent = "Edit";
+    editButton.onclick = function() {
+        startEditPost(post.postID, postElement, statusElement); 
+    };
+
+    var deleteButton = document.createElement("button");
+    deleteButton.classList.add("actions-delete");
+    deleteButton.textContent = "Delete";
+    deleteButton.onclick = function() {
+        deletePost(post.postID, postElement, statusElement);
+    };
+
+    post.title.replaceWith(titleElement);
+    post.body.replaceWith(contentElement);
+    post.actions.querySelector(".actions-edit-submit").replaceWith(editButton);
+    post.actions.querySelector(".actions-edit-cancel").replaceWith(deleteButton);
+	post.summary.replaceWith(detailsElement);
 }
 
 async function deletePost(postID, postElement, statusElement) {
@@ -72,5 +191,8 @@ async function deletePost(postID, postElement, statusElement) {
 		}
 	} else {
 		postElement.remove();
+		totalBlogPosts--;
+		loadedPostsCount--;
+		updateButton();
 	}
 }
