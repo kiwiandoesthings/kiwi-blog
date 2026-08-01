@@ -1,6 +1,10 @@
 const isDevelopment = window.location.hostname.includes("test");
 const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
+
+const links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
+const names = ["Home", "Blog", "Account", "Login", "Register"];
+const linkIndices = [[0, 3, 4], [0, 1, 2]];
 addFooter();
 
 function setCookie(key, value) {
@@ -53,9 +57,9 @@ async function api(route, body, method) {
         if (response.status == 500) {
             return apiResponse(true, 500, serverErrorMessage);
         } else if (!response.ok) {
-            var unknownErrorMessage = "Unknown error: " + response.status + " with error message \"" + await response.text() + "\". Please report if the problem persists.";
+            var unknownErrorMessage = await response.text();
             console.log(unknownErrorMessage);
-            return apiResponse(true, response.status, unknownErrorMessage);
+            return apiResponse(true, response.status, "Error " + response.status + ": " + unknownErrorMessage);
         }
 
 		var data = null;
@@ -129,14 +133,14 @@ function addFooter() {
 	var body = document.body;
 
 	var footer = document.createElement("footer");
-	
-	var links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
-	var names = ["Home", "Blog", "Account", "Login", "Register"];
 
-	for (var i = 0; i < links.length; i++) {
+	var loggedIn = getCookie("blog_id") == "" ? 0 : 1;
+	for (var i = 0; i < linkIndices[0].length; i++) {
+		var linkIndex = linkIndices[loggedIn][i];
+
 		var link = document.createElement("a");
-		link.href = links[i];
-		link.textContent = names[i];
+		link.textContent = names[linkIndex];
+		link.href = links[linkIndex];
 		link.classList.add("footer-link");
 		footer.appendChild(link);
 	}

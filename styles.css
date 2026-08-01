@@ -129,7 +129,6 @@ footer {
 
 .blog-body {
 	word-wrap: break-word;
-	white-space: pre-wrap;
 	overflow-wrap: break-word;
 	padding: 5px;
 	box-sizing: border-box;

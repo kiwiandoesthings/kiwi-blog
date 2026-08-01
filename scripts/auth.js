@@ -21,8 +21,7 @@ async function login() {
 	}
 
 	setCookie("blog_id", response.data.blogID);
-
-	displayStatus(false, "status", "Successfully logged in.");
+	redirect("pages/blog");
 }
 
 async function logout() {
@@ -40,7 +39,7 @@ async function logout() {
 	}
 
 	setCookie("blog_id", "");
-	displayStatus(false, "status", "Successfully logged out.");
+	redirect("");
 }
 
 async function register() {
@@ -60,5 +59,27 @@ async function register() {
 		return;
 	}
 
-	displayStatus(false, "status", "Successfully registered. Please log in with your new account.");
+	setCookie("blog_id", response.data.blogID);
+	redirect("pages/blog");
+}
+
+async function deregister() {
+	if (!confirm("Are you really sure you want to delete your blog? All of your posts will be IMMEDIATELY and PERMANENTLY deleted.")) {
+		return;
+	}
+
+	var response = await api("blogs", {}, "DELETE");
+
+	if (response.error) {
+		if (response.status == 401) {
+			// Shouldn't be possible to reach, page redirects you immediately if you're not logged in
+			displayStatus(true, "status", "You aren't logged in!");
+		} else {
+			displayStatus(true, "status", "Unknown error deregistering blog: " + response.data)
+		}
+		return;
+	} 
+
+	setCookie("blog_id", "");
+	redirect("");
 }
