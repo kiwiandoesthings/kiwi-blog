@@ -49,7 +49,20 @@ main > * {
 
 main > section {
     flex: 1;
-    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+}
+
+main > section > h1,
+main > section > p,
+#blog-viewer {
+    width: 100%;
+}
+
+main > section > form {
+    flex: 1;
 }
 
 main > section:only-child {
@@ -67,12 +80,21 @@ main > section:only-child {
 form {
 	display: flex;
 	flex-direction: column;
+
+	outline: 2px grey inset;
+	padding: 10px;
 }
 
-form > div {
+form > div, fieldset > div {
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 10px;
+}
+
+fieldset {
+	border: none;
+	padding: 0px;
+	margin: 0px;
 }
 
 textarea {
@@ -82,6 +104,14 @@ textarea {
 footer {
     justify-content: center;
     display: flex;
+	position: relative;
+}
+
+#footer-version {
+	position: absolute;
+    right: 10px;
+	bottom: 10px;
+    font-size: 12pt;
 }
 
 .footer-link {

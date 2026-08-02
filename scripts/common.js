@@ -145,7 +145,12 @@ function addFooter() {
 		footer.appendChild(link);
 	}
 
+	var version = document.createElement("div");
+	version.id = "footer-version";
+	version.textContent = "KiwiBlog v1.1";
+
 	body.appendChild(footer);
+	body.appendChild(version);
 }
 
 function redirect(path) {

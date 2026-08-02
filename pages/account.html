@@ -9,10 +9,42 @@
 			<section>
 				<h1>KiwiBlog - Account</h1>
 				<p id="status" style="display: none;"></p>
-		
-				<button onclick="logout()">Logout</button>
+				
+				<form>
+					<h3 class="centered">Account Controls</h3>
 
-				<button onclick="deregister()">Delete Blog</button>
+					<div>
+						<button type="button" onclick="logout()">Logout</button>
+					</div>
+					
+					<div>
+						<button type="button" onclick="deregister()">Delete Blog</button>
+					</div>
+				</form>
+				
+				<form>
+					<h3 class="centered">Blog Settings</h3>
+					<fieldset id="settings-fieldset" disabled>
+
+						<div>
+							<label for="email-input">Email: </label>
+							<input id="email-input" type="text" name="email" autocomplete="off">
+						</div>
+
+						<div>
+							<div class="checkbox-container">
+								<label for="email-public-input">Public Email: </label>
+								<input id="email-public-input" type="checkbox" name="email-public" autocomplete="off">
+							</div>
+
+						</div>
+
+						<div>
+							<button type="button" onclick="saveBlogSettings()">Save Settings</button>	
+						</div>
+					</fieldset>
+				</form>
+				
 			</section>
 			<section>
 				<h1>Blog Integrations</h1>

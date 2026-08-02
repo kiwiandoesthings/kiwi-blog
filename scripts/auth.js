@@ -35,7 +35,6 @@ async function logout() {
 		} else {
 			displayStatus(true, "status", response.data);
 		}
-		return;
 	}
 
 	setCookie("blog_id", "");
