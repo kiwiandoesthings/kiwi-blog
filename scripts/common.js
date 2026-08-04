@@ -5,7 +5,9 @@ const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/
 const links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
 const names = ["Home", "Blog", "Account", "Login", "Register"];
 const linkIndices = [[0, 3, 4], [0, 1, 2]];
-addFooter();
+if (window.location.hostname.includes("kiwiandoesthings.place")) {
+	addFooter();
+}
 
 function setCookie(key, value) {
   var expiry = new Date();
