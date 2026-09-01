@@ -125,7 +125,7 @@ async function finishEdit(post, postElement, statusElement) {
 		return;
 	}
 
-	var formattedHtml = response.data.formattedContent;
+	var formattedHtml = response.data.postFormattedContent;
 	var editDate = response.data.postEditDate;
     
     restorePost(post, postElement, statusElement, post.title.value, formattedHtml, post.summary.value, editDate);
