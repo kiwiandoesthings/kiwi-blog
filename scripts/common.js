@@ -1,7 +1,6 @@
 const isDevelopment = window.location.hostname.includes("test");
 const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/" : "https://api.kiwiandoesthings.place/blog/";
 
-
 const links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
 const names = ["Home", "Blog", "Account", "Login", "Register"];
 const linkIndices = [[0, 3, 4], [0, 1, 2]];

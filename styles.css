@@ -12,9 +12,9 @@
 	text-align: center;
 }
 
-html {
+html, body {
     height: 100%;
-    margin: 0px;
+    margin: 0;
 }
 
 body {
@@ -108,9 +108,8 @@ footer {
 }
 
 #footer-version {
-	position: absolute;
-    right: 10px;
-	bottom: 10px;
+	position: static;
+    align-self: flex-end;
     font-size: 12pt;
 }
 
