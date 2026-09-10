@@ -150,8 +150,8 @@ function addFooter() {
 	version.id = "footer-version";
 	version.textContent = "KiwiBlog v1.1";
 
+	footer.appendChild(version);
 	body.appendChild(footer);
-	body.appendChild(version);
 }
 
 function redirect(path) {
