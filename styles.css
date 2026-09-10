@@ -135,6 +135,7 @@ footer {
 	background-color: lightgrey;
 	margin-bottom: 15px;
 	padding: 5px;
+	min-width: 0;
 }
 
 .blog-post hr {
@@ -159,11 +160,12 @@ footer {
 }
 
 .blog-body {
-	word-wrap: break-word;
-	overflow-wrap: break-word;
 	padding: 5px;
 	box-sizing: border-box;
 	margin: 0px;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+	min-width: 0;
 }
 
 .blog-body > * {
