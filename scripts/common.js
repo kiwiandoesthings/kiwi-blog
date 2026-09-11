@@ -4,7 +4,7 @@ const apiString = isDevelopment ? "https://api.test.kiwiandoesthings.place/blog/
 const links = ["/", "/pages/blog", "/pages/account", "/pages/login", "/pages/register"];
 const names = ["Home", "Blog", "Account", "Login", "Register"];
 const linkIndices = [[0, 3, 4], [0, 1, 2]];
-if (!window.location.hostname.includes("kiwiblog.kiwiandoesthings.place")) {
+if (window.location.hostname.includes("kiwiblog.kiwiandoesthings.place")) {
 	addFooter();
 }
 
